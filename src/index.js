@@ -13,8 +13,11 @@ import { form } from './modules/form'
 
 
 menu()
-modal()
+modal(['callback', 'feedback', 'application'])
 slides()
 swiper()
 accordeon()
-form()
+form(['callback', 'feedback', 'application'])
+
+
+

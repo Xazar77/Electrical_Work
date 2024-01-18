@@ -259,14 +259,14 @@ a.absolute {
 	position: relative;
 }
 .modal {
-	display: none;
+	// display: none;
 	width: 460px;
 	max-width: 100%;
 	background: #fff;
 	padding: 55px 25px 35px;
 }
 .modal-overlay {
-	display: none;
+	// display: block;
 	position: fixed;
 	width: 100%;
 	height: 100vh;
@@ -285,7 +285,10 @@ a.absolute {
 	right: 10px;
 	cursor: pointer;
 }
-.modal-callback {
+.modal-callback,
+.modal-feedback,
+.modal-application,
+.modal-responseMessage {
 	display: none;
 	position: fixed;
 	top: 20%;

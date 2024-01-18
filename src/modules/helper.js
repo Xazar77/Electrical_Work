@@ -19,9 +19,40 @@ export const animate = ({ timing, draw, duration }) => {
 
 
 
+export const openModal = (elem, overlay) => {
+	elem.style.display = 'block'
+	overlay.style.display = 'block'
+	animate({
+		duration: 1000,
+		timing(timeFraction) {
+		  return timeFraction;
+		},
+		draw(progress) {
+			elem.style.opacity = progress ;
+			overlay.style.opacity = progress ;
+		}
+	  });
+
+}
 
 
-
+export const closeModal = (elem, overlay) => {
+    
+	animate({
+		duration: 1000,
+		timing(timeFraction) {
+			return timeFraction;
+		},
+		draw(progress) {
+			elem.style.opacity = 1 - progress ;
+			overlay.style.opacity = 1 - progress ;
+		}
+	});
+	setTimeout(() => {
+		elem.style.display = 'none'
+		// overlay.style.display = 'none'
+	}, 1050)
+}
 
 
 // export const validInputs = (form) => {
@@ -82,22 +113,50 @@ export const animate = ({ timing, draw, duration }) => {
 
 
 export const validInputs = (form) => {
+
+
 	const listsInput = form.querySelectorAll("input");
-
+	// console.log(listsInput)
 	const testFio = /[а-яё\- ]/gi
-	const testTel = /^(\+7|8)\(\d{3}\)\d{3}\-?\d{2}\-?\d{2}$/g
+	const testMessage = /[а-яёА-Я\-\.\!\, ]/g
 
+
+	if(form === document.querySelector('[name=form-feedback]')) {
+		const inputText = form.querySelector('[name=message]')
+		
+		inputText.addEventListener("input", (e) => {
+			if(e.target.value !=='') {
+
+				inputText.value = (e.target.value[0].toUpperCase() + e.target.value.substring(1))
+					.replace(/[^а-яёА-Я\-\.\!\, ]+/g, '')
+
+				if(testMessage.test(inputText.value)) {
+					inputText.classList.add('success')
+					inputText.style.border = '1px solid green'
+				} else {
+					inputText.classList.remove('success')
+					inputText.style.border = '1px solid red'
+				}
+			} else {
+				inputText.classList.remove('success')
+				inputText.style.border = '1px solid red'
+			}
+		});
+		
+	}
+	
 
 	listsInput.forEach((input) => {
-		if (input === document.querySelector("input[name=fio]" )) {
-			
+		
+		if (input.closest("input[name=fio]")) {
+			// console.log(input)
 			input.addEventListener("input", (e) => {
 				if(e.target.value !=='') {
 
 					input.value = (e.target.value[0].toUpperCase() + e.target.value.substring(1))
 						.replace(/[^а-яА-Я-\ ]+/g, '')
 
-					if(testFio.test(input.value) && input.value !=='') {
+					if(testFio.test(input.value)) {
 						input.classList.add('success')
 						input.style.border = '1px solid green'
 					} else {
@@ -109,8 +168,7 @@ export const validInputs = (form) => {
 					e.target.style.border = '1px solid red'
 				}
 			});
-		}
-		if(input === document.querySelector('input[name=tel]')) {
+		} else if(input.closest('input[name=tel]')) {
 			[].forEach.call( document.querySelectorAll('input[name=tel]'), (input) => {
 				let keyCode;
 				
@@ -178,24 +236,41 @@ export const validInputs = (form) => {
 
 
 export const validData = (form) => {
-	const listsInput = form.querySelectorAll("input");
-
+	const listsInput = form.querySelectorAll("input")
+	
 	let success = false
 
 	const inputArr = []
 
-	listsInput.forEach(input => {
-		
-		if(input.classList.contains('success') && input.value !="") {
-			inputArr.push(input)
+	if(form === document.querySelector('form[name=form-feedback]')) {
+		const textArea = form.querySelector('textarea[name=message]')
+		const inputs = form.querySelectorAll('input')
+		inputs.forEach(input => {
+			if(input.classList.contains('success')) {
+				inputArr.push(input)
+				
+			}
+		})
+		if(textArea.classList.contains('success')) {
+			inputArr.push(textArea)
 		}
-	}) 
+		if(inputArr.length === 3) {
+			success = true
+		}
 
-	console.log(inputArr)
-	if(inputArr.length === 2) {
-		success = true
+	} else if(!(form === document.querySelector('form[name=form-feedback]'))){
+
+		listsInput.forEach(input => {
+			
+			if(input.classList.contains('success') && input.value !="") {
+				inputArr.push(input)
+			}
+		}) 
+		if(inputArr.length === 2) {
+			success = true
+		}
 	}
+	
 
-	console.log(success)
 	return success
 }

@@ -38,14 +38,17 @@ export const form = (selectors = []) => {
     
         validInputs(form)
 
-        const showResponsModal = () => {
-            openModal(modalResponseMessage, modalOverlay)
-            statusBlock.textContent = successMessage
-            modalResponseMessage.append(statusBlock)
+        const showResponsModal = () => {  
+            setTimeout(() => {
+                openModal(modalResponseMessage, modalOverlay)
+                statusBlock.textContent = successMessage
+                modalResponseMessage.append(statusBlock)
+
+            },1100)
             btnResClose.addEventListener('click', (e) => {
                 e.preventDefault()
                 closeModal(modalResponseMessage, modalOverlay)
-                modalOverlay.style.display = 'none'
+          
                 statusBlock.textContent = ''
             })
         }

@@ -50,7 +50,7 @@ export const closeModal = (elem, overlay) => {
 	});
 	setTimeout(() => {
 		elem.style.display = 'none'
-		// overlay.style.display = 'none'
+		overlay.style.display = 'none'
 	}, 1050)
 }
 
@@ -170,6 +170,7 @@ export const validInputs = (form) => {
 			});
 		} else if(input.closest('input[name=tel]')) {
 			[].forEach.call( document.querySelectorAll('input[name=tel]'), (input) => {
+				
 				let keyCode;
 				
 				
